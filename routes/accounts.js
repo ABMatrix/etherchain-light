@@ -5,11 +5,12 @@ var async = require('async');
 var Web3 = require('web3');
 
 router.get('/:offset?', function(req, res, next) {
+  // console.log(req);
   var config = req.app.get('config');  
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  
-  async.waterfall([
+
+  async.waterfall([  //多个函数依次执行，且前一个的输出为后一个的输入
     function(callback) {
       web3.parity.listAccounts(20, req.params.offset, function(err, result) {
         callback(err, result);

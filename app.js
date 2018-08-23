@@ -13,6 +13,8 @@ var accounts = require('./routes/accounts');
 var contract = require('./routes/contract');
 var signature = require('./routes/signature');
 var search = require('./routes/search');
+var token = require('./routes/token');
+var event = require('./routes/event');
 
 var config = new(require('./config.js'))();
 
@@ -53,6 +55,9 @@ app.use('/accounts', accounts);
 app.use('/contract', contract);
 app.use('/signature', signature);
 app.use('/search', search);
+// app.use('/token',token);
+app.get('/token', token);
+app.use('/event', event);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

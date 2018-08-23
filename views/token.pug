@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  h3 Recent events
+  table.table
+    thead
+      tr
+        th Type
+        th From
+        th To
+        th Amount
+        th Date
+    tbody
+      for event,index in events
+        if event.event === "Transfer"
+          tr
+            td
+              a(href="/event/" + index) #{event.event}
+            td
+              a(href="/account/" + event.args.from) #{event.args.from}
+            td
+              a(href="/account/" + event.args.to) #{event.args.to}
+            td #{event.args.value} SYC
+            td #{moment(event.timestamp * 1000).fromNow()}
+        if event.event === "Approval"
+          tr
+            td
+              a(href="/event/" + index) #{event.event}
+            td
+              a(href="/account/" + event.args.owner) #{event.args.owner}
+            td
+              a(href="/account/" + event.args.spender) #{event.args.spender}
+            td #{event.args.value} SYC
+            td #{moment(event.timestamp * 1000).fromNow()}

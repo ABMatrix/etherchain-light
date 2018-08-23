@@ -5,7 +5,6 @@ var async = require('async');
 var Web3 = require('web3');
 
 router.get('/:account', function(req, res, next) {
-  
   var config = req.app.get('config');  
   var web3 = new Web3();
   web3.setProvider(config.provider);
@@ -32,6 +31,11 @@ router.get('/:account', function(req, res, next) {
       });
     }, function(balance, callback) {
       data.balance = balance;
+      web3.eth.contract(config.tokenAbi).at(config.tokenAddress).balanceOf(req.params.account, function(err, SYCbalance) {
+        callback(err, SYCbalance);
+      });
+    }, function(SYCbalance, callback) {
+      data.SYCbalance = SYCbalance;
       web3.eth.getCode(req.params.account, function(err, code) {
         callback(err, code);
       });

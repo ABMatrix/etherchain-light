@@ -9,10 +9,12 @@ block content
     tr
       td Balance:
       td #{ethformatter(account.balance)}
+      td #{account.SYCbalance} SYC
     if account.name
       tr
         td Name:
         td #{account.name}
+        td
 
   div
     ul.nav.nav-tabs(role='tablist')
