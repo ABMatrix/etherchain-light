@@ -37,14 +37,30 @@ router.get('/:offset?', function(req, res, next) {
           data[account] = {};
           data[account].address = account;
           data[account].type = code.length > 2 ? "Contract" : "Account";
-          
-          web3.eth.getBalance(account, function(err, balance) {
-            if (err) {
-              return eachCallback(err);
-            }
-            data[account].balance = balance;
-            eachCallback();
-          });
+
+          async.waterfall([
+            function(callback) {
+              web3.eth.getBalance(account, function(err, balance) {
+                if (err) {
+                  return eachCallback(err);
+                }
+                data[account].balance = balance;
+                callback(err, account);
+              });
+            },function(account, callback) {
+              web3.eth.contract(config.tokenAbi).at(config.tokenAddress).balanceOf(account, function(err, SYCbalance) {
+                if (err) {
+                  return eachCallback(err);
+                }
+                data[account].SYCbalance = SYCbalance;
+                callback(err);
+              });
+            }], function(err) {
+              if (err) {
+                return eachCallback(err);
+              }
+              eachCallback()
+            })
         });
       }, function(err) {
         callback(err, data, lastAccount);

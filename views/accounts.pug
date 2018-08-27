@@ -8,11 +8,13 @@ block content
         th Address
         th Type
         th Balance
+        td 
     tbody
       for account in accounts
         tr
           td 
             a(href="/account/" + account.address) #{nameformatter.format(account.address)}
           td #{account.type}
-          td #{ethformatter(account.balance)}
+          td #{ethformatter(account.balance)}   
+          td #{account.SYCbalance} SYC
   a.btn.btn-default(href="/accounts/" + lastAccount) Next Page
